@@ -33,7 +33,7 @@ class skipListNode(T)
 {
   skipListNode[] right;
   T value;
-  this(T p_value, ulong p_depth)
+	this(T p_value, size_t p_depth)
   {
     right = new skipListNode[p_depth];
     value = p_value;
@@ -87,7 +87,7 @@ public:
   
   void printHops()
   {
-    for(ulong i = 0; i < firstNodes.length; i++)
+		for(size_t i = 0; i < firstNodes.length; i++)
     {
       if(numHopCalls[i] > 0)
       {
@@ -98,7 +98,7 @@ public:
   
   void checkCounts()
   {
-    for(ulong i = 0; i < maxDepth; i++)
+		for(size_t i = 0; i < maxDepth; i++)
     {
       ulong count = 0;
       skipListNode!(T) node = firstNodes[i];
@@ -114,7 +114,7 @@ public:
   
   void displayCounts()
   {
-    for(ulong i = 0; i < firstNodes.length; i++)
+		for(size_t i = 0; i < firstNodes.length; i++)
     {
       writeln("depth: ", i, " count: ", numElts[i]);
     }
@@ -217,11 +217,11 @@ public:
       return false; 
     }
     
-    ulong s;
+		size_t s;
     auto ln = maxDepth;
     while(s < ln - 1 && uniform(0, 1<<invproba, r) == 0) s++;
     // element will be inserted in levels 0 ... s
-    skipListNode!(T) newNode = new skipListNode!(T)(refValue, s+1);
+    skipListNode!(T) newNode = new skipListNode!(T)(refValue, s + 1);
     for(int i = 0; i < s + 1; i++)
     {
       numElts[i]++;

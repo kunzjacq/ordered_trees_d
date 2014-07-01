@@ -29,10 +29,10 @@ import orderedSet;
 class partialArray(T)
 {
   T[] value;
-  ulong numValues;
+	size_t numValues;
   ulong level;
 
-  this(ulong n, ulong p_level)
+	this(size_t n, ulong p_level)
   {
     value = new T[n];
     level = p_level;
@@ -52,23 +52,23 @@ class partialArray(T)
 
   // returns whether node contains v. If so, returns the index of v. Otherwise returns the lowest index s.t. 
   // values[index]>=v, and numValues if all values are less than v.
-  bool hasTop(T v, ref ulong idx)
+	bool hasTop(T v, ref size_t idx)
   {
-    if(value[0]>v)
+    if(value[0] > v)
     {
-      idx=0;
+      idx = 0;
       return false;
     }
-    if(value[numValues-1] < v)
+    if(value[numValues - 1] < v)
     {
-      idx=numValues;
+      idx = numValues;
       return false;
     }
-    ulong a=-1, b = numValues-1;
-    while(b>a+1)
+		size_t a = -1, b = numValues-1;
+    while(b > a + 1)
     {
-      ulong c=(a+b+1)/2;
-      if(value[c] >= v) b=c; else a=c;
+			size_t c = (a + b + 1) / 2;
+      if(value[c] >= v) b = c; else a = c;
     }
     idx = b;
     assert(value[b]>=v);
@@ -77,16 +77,16 @@ class partialArray(T)
 
   // returns whether node contains v. If so, idx is set to the index of v. 
   // no guarantee is made on the idx if v is not present in the node.
-  bool has(T v, ref ulong idx)
+	bool has(T v, ref size_t idx)
   {
     if(value[0] > v || value[numValues-1] < v)
     {
       return false;
     }
-    ulong a, b = numValues;
+		size_t a, b = numValues;
     while(b > a + 1)
     {
-      ulong c = (a + b)/2;
+			size_t c = (a + b) / 2;
       if(value[c] > v) b=c; else a=c;
     }
     idx = a;
@@ -100,7 +100,7 @@ class partialArray(T)
     numValues--;
     return value[numValues];
   }
-  void insert(T refValue, ulong idx)
+	void insert(T refValue, size_t idx)
   {
     assert(numValues < value.length);
     for(int j = cast(int)numValues - 1; j >= cast(int)idx; j--)
@@ -116,14 +116,14 @@ class partialArray(T)
   {
     bool res = true;
     if (numValues == 0) return true;
-    for(ulong i=0; i < numValues-1; i++) res &= value[i] < value[i+1];
+		for(size_t i = 0; i < numValues - 1; i++) res &= value[i] < value[i+1];
     return res;
   }
 
-  void remove(ulong idx)
+	void remove(size_t idx)
   {
     assert(numValues > idx);
-    for(ulong j = idx; j < numValues - 1; j++) value[j] = value[j + 1];
+		for(size_t j = idx; j < numValues - 1; j++) value[j] = value[j + 1];
     numValues--;
   }
 }
@@ -134,7 +134,7 @@ class skipListNode(T)
   skipListNode up;
   partialArray!(T) values;
 
-  this(ulong n, ulong p_level)
+	this(size_t n, ulong p_level)
   {
     values = new partialArray!(T)(n, p_level);
   }
@@ -164,10 +164,10 @@ public:
   // number of elements in each level, to check for the list consistency.
   ulong [] numElts; 
   Random r; // random bit generator to draw the nodes depths.
-  ulong numEltsPerNode;
-  ulong numNodesCreated;
+	size_t numEltsPerNode;
+	size_t numNodesCreated;
 
-  this(int p_invproba, int p_maxDepth, ulong p_numEltsPerNode, uint p_seed)
+	this(int p_invproba, int p_maxDepth, size_t p_numEltsPerNode, uint p_seed)
   {
     invproba = p_invproba;
     maxDepth = p_maxDepth;
@@ -201,7 +201,7 @@ public:
   bool check()
   {
     bool ok = true;
-    for(ulong i = 0; i < firstNodes.length; i++)
+    for(size_t i = 0; i < firstNodes.length; i++)
     {
       ulong count = 0;
       skipListNode!(T) node = firstNodes[i];
@@ -233,7 +233,7 @@ public:
 
   void displayCounts()
   {
-    for(ulong i = 0; i < firstNodes.length; i++)
+    for(size_t i = 0; i < firstNodes.length; i++)
     {
       writeln("depth: ", i, " count: ", numElts[i]);
     }
@@ -261,8 +261,8 @@ public:
         continue;
       }
 
-      ulong idx;
-      if(node.values.has(refValue,idx))
+			size_t idx;
+      if(node.values.has(refValue, idx))
       {
         if(node.values.numValues > 1)
         {
@@ -404,7 +404,7 @@ public:
           // if node.right !is null, it can be inserted locally, too
           // in any case, if the value is already present, it is in node 'node'
 
-          ulong idx;
+					size_t idx;
           if(node.values.max() < refValue)
           {
             // simple case: insertion at the end of current level

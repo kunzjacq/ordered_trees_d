@@ -52,5 +52,6 @@
     <Compile Include="orderedSet.d" />
     <Compile Include="skipListsWithArrays.d" />
     <Compile Include="coalescedSkipLists.d" />
+    <Compile Include="associativeArray.d" />
   </ItemGroup>
 </Project>

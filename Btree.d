@@ -1,7 +1,7 @@
 module Btree;
 
 /* Implementation of B-trees.
- * A B-tree is a k-ary tree for some k>1 with k-1 values v_1,...v_k-1 stored in the node. 
+ * A B-tree is a k-ary tree for some k > 1 with k - 1 values v_1, ..., v_k-1 stored in the node. 
  * The values in subtree 1 <= i <= k of a node  are > v_{i-1} (if i>=2) and < v_i (if i < k).
  * see http://en.wikipedia.org/wiki/B-tree or
  * http://infolab.usc.edu/csci585/Spring2010/den_ar/indexing.pdf (original paper)
@@ -30,7 +30,7 @@ import orderedSet;
 
 class btreeNode(T){
   T[] keys;
-  ulong numSubnodes;
+  size_t numSubnodes;
   btreeNode[] subnodes;
   btreeNode right; // pointer to its left neighbor if there is one with the same parent or a different parent.
 
@@ -43,7 +43,7 @@ class btreeNode(T){
   {
     assert(right !is null);
     ulong l = subnodes.length;
-    if(numSubnodes != l/2 - 1 && right.numSubnodes != l/2 - 1)
+		version(Debug) if(debugFlag) if(numSubnodes != l/2 - 1 && right.numSubnodes != l/2 - 1)
     {
       writeln(l/2, " ", numSubnodes, " ", right.numSubnodes);
     }
@@ -83,7 +83,7 @@ class btreeNode(T){
   {
     assert(right !is null);
     ulong l = subnodes.length;
-    ulong numJoinedSubnodes = numSubnodes + right.numSubnodes;
+    size_t numJoinedSubnodes = numSubnodes + right.numSubnodes;
     assert(numJoinedSubnodes < l);
     assert(numSubnodes > 0 && right.numSubnodes > 0); 
     for(uint i = 0; i < right.numSubnodes ; i++)
@@ -99,22 +99,22 @@ class btreeNode(T){
 
   void split(btreeNode!(T) newNode)
   {
-    ulong l = subnodes.length;
+		size_t l = subnodes.length;
     assert(numSubnodes == l);
-    ulong r = l/2;
+    size_t r = l/2;
     newNode.right = right;
     right = newNode;
     numSubnodes = r;
     right.numSubnodes = r;
     for(uint i = 0; i < right.numSubnodes ; i++)
     {
-      right.keys[i] = keys[r+i];
+      right.keys[i] = keys[r + i];
     }
     if(subnodes[0] !is null)
     {
       for(uint i = 0; i < right.numSubnodes ; i++)
       {
-        right.subnodes[i] = subnodes[r+i];
+        right.subnodes[i] = subnodes[r + i];
         subnodes[r + i] = null;
       }
       // no need to update .right pointers of subtrees as there was no addition/removal at this level
@@ -137,7 +137,7 @@ class btreeNode(T){
     }
     for(int j = cast(int)(numSubnodes); j > i; j--)
     {
-      keys[j] = keys[j-1];
+      keys[j] = keys[j - 1];
     }
     keys[i] = refValue;
     numSubnodes++; // here numSubnodes may be equal to l, which is a temporary invariant violation
@@ -436,7 +436,7 @@ class btree(T): OrderedSet!(T)
   ulong checkRightRelationAux(btreeNode!(T) currentNode, uint currentDepth)
   {
     ulong count = 0;
-    for(ulong i = 0; i < currentNode.numSubnodes; i++)
+    for(size_t i = 0; i < currentNode.numSubnodes; i++)
     {
       if(currentNode.subnodes[i] !is null)
       {
@@ -475,7 +475,7 @@ class btree(T): OrderedSet!(T)
   {
     if(currentDepth == depth) //at a leaf node
     {
-      for(ulong i = 0; i < currentNode.numSubnodes; i++)
+      for(size_t i = 0; i < currentNode.numSubnodes; i++)
       {
         write(currentNode.keys[i], " ");
       }
@@ -483,7 +483,7 @@ class btree(T): OrderedSet!(T)
     }
     else
     {
-      for(ulong i = 0; i < currentNode.numSubnodes; i++)
+      for(size_t i = 0; i < currentNode.numSubnodes; i++)
       {
         printAux(currentNode.subnodes[i], currentDepth + 1);
       }

@@ -22,6 +22,7 @@ import skipLists;
 import coalescedSkipLists;
 import skipListsWithArray;
 import Btree; 
+import associativeArray;
 
 void main(string[] args)
 {
@@ -32,5 +33,6 @@ void main(string[] args)
   avlTreeUnitTest2(numElts);
   skipListWithArraysUnitTest(numElts);
   btreeUnitTest(numElts);
+	associativeArrayUnitTest(numElts);
 }
 

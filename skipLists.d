@@ -84,7 +84,7 @@ public:
   
   void printHops()
   {
-    for(ulong i = 0; i < firstNodes.length; i++)
+    for(size_t i = 0; i < firstNodes.length; i++)
     {
       if(numHopCalls[i] > 0) 
       {
@@ -100,7 +100,7 @@ public:
   bool check()
   {
     bool ok = true;
-    for(ulong i = 0; i < firstNodes.length; i++)
+		for(size_t i = 0; i < firstNodes.length; i++)
     {
       ulong count = 0;
       skipListNode!(T) node = firstNodes[i];
@@ -125,7 +125,7 @@ public:
 
   void displayCounts()
   {
-    for(ulong i = 0; i < firstNodes.length; i++)
+		for(size_t i = 0; i < firstNodes.length; i++)
     {
       writeln("depth: ", i, " count: ", numElts[i]);
     }
